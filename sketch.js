@@ -1,6 +1,22 @@
-/*
+/* 				commentary
 
-The Game Project 5 - Bring it all together
+1•) extension(s) :Below are the three extensions I have used 
+	a.)	Sound : I have added different sounds for when the game character 
+				•	jumps  
+				•	falls onto canyon
+				•	gets killed by the enemy
+				•	collects coins 
+				•	reaches the flag to win the game
+	b.)	Platforms :  I have created multiple platforms varying in size and is placed through the game at different heights 
+	c.)Enemies : I have created multiple enemies and placed strategically near coins so as to make the game more challenging and fun for the user
+
+2•) the bits you found difficult :
+	I found arranging/positioning  the enemies ,coins and platform in the game world to make the game more fun a bit challenging 
+
+3•) the skills you learnt/practiced by implementing it:
+	a.)	Debugging skills : I learnt how to effectively  use the console and trace through the code to find the root cause of the issue
+	b.)	Problem Solving skills : spending time analyzing and strategizing the issues and best resolution helped me gain valuable problem solving skills 
+
 
 */
 
@@ -31,14 +47,16 @@ function preload()
     soundFormats('mp3','wav');
     //load sounds here
     jumpSound = loadSound('assets/jump.wav');
-    jumpSound.setVolume(0.1);
 	fellCanyonSound = loadSound('assets/fellCanyon.wav');
-    fellCanyonSound.setVolume(0.1);
 	killByEnemySound = loadSound('assets/killByEnemy.wav');
-    killByEnemySound.setVolume(0.1);
 	gameWonSound = loadSound('assets/gameWon.wav');
-    gameWonSound.setVolume(0.1);
 	collectCoinSound = loadSound('assets/collectCoin.wav');
+
+	//Set volume
+    jumpSound.setVolume(0.1);
+    fellCanyonSound.setVolume(0.1);
+    killByEnemySound.setVolume(0.1);
+    gameWonSound.setVolume(0.1);
     collectCoinSound.setVolume(0.1);
 }
 
@@ -163,7 +181,7 @@ function startGame()
 	enemies.push(new Enemy(2300,floorPos_y-10,100));
 
 }
-
+// All the drawing code is below 
 function draw()
 {
 	// fill the sky blue
@@ -231,12 +249,12 @@ function draw()
 	fill(255);
 	noStroke();
 
-	// Game Score
+	// Game Score board
 	stroke(0)
 	textSize(17)
 	text('Game Score : '+ game_score,20,25)
 
-	// Game over
+	// Game over Message 
 	if (lives <1 )
 	{ 
 		background('rgba(0,0,0, 0.5) ');
@@ -248,7 +266,7 @@ function draw()
 	 
 	}
 
-	// Level Complete
+	// Level Complete Message 
 	if (flagpole.isReached)
 	{
 		
@@ -323,7 +341,8 @@ function draw()
 	}
 
 	// Check if the game character reached Flagpole
-	if (flagpole.isReached ==false) {
+	if (flagpole.isReached ==false)
+	{
 		checkFlagpole();
 	}
 	
@@ -357,11 +376,14 @@ function keyPressed()
 	{
 		isRight = true ;
 	};
+	// When game is over by character loosing lives
 	if (lives <1 &&(keyCode == 32 || key =='W')) 
 	{
 		lives = 4;
 		startGame();
 	};
+
+	//When game is won by reaching the flag
 	if (flagpole.isReached &&(keyCode == 32 || key =='W')) 
 	{
 		lives = 4;
@@ -700,7 +722,8 @@ function checkCollectable(t_collectable)
 // Function to create Platforms using the Factory design pattern
 function createPlatforms(x,y,length)
 {
-	var p = {
+	var p = 
+	{
 		x:	x,
 		y:	y,
 		length:	length,
@@ -712,15 +735,14 @@ function createPlatforms(x,y,length)
 
 
 		},
-		checkContact: function(gc_x,gc_y){
+		checkContact: function(gc_x,gc_y)
+		{
 			if(gc_x >this.x && gc_x <this.x + this.length)
 			{
 				var d = this.y -gc_y;
 				if(d>=0 &&d<1){
 					return true;
-
 				}
-
 			}
 			return false;
 		}
@@ -769,7 +791,7 @@ function Enemy(x,y,range)
 		}
 }
 
-// Function to draw robots
+// Function to draw enemy robots
 function drawRobot(x, y, bodyHeight, neckHeight) 
 {
 
